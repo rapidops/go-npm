@@ -28,7 +28,7 @@ const PLATFORM_MAPPING = {
 function getInstallationPath(callback) {
 
     // `npm bin` will output the path where binary files should be installed
-    exec("npm bin", function(err, stdout, stderr) {
+    exec("npm bin -g", function(err, stdout, stderr) {
 
         let dir =  null;
         if (err || stderr || !stdout || stdout.length === 0)  {
