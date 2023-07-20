@@ -197,6 +197,9 @@ function uninstall(callback) {
 
     let opts = parsePackageJson();
     getInstallationPath(function(err, installationPath) {
+        console.log('uinstallation', installationPath);
+        console.log('opts', opts);
+        console.log('err', err);
         if (err) callback("Error finding binary installation directory");
 
         try {
