@@ -46,11 +46,15 @@ function getInstallationPath(callback) {
             var env = process.env;
             if (env && env.npm_config_prefix) {
                 dir = path.join(env.npm_config_prefix, "bin");
+            } else {
+                console.log('inside env.npm_config_prefix else condition');
+                dir = stdout.trim();
             }
         } else {
+            console.log('inside main else condition');
             dir = stdout.trim();
         }
-
+        console.log('Installation path:'+ dir);
         mkdirp.sync(dir);
 
         callback(null, dir);
