@@ -58,7 +58,7 @@ function getInstallationPath(callback) {
             console.log('inside main else condition');
             dir = stdout.trim();
         }
-        console.log('Installation path:'+ dir);
+        console.log('Installation path:',  dir);
 
         mkdirp.sync(dir);
 
@@ -196,6 +196,7 @@ function install(callback) {
 function uninstall(callback) {
 
     let opts = parsePackageJson();
+    console.log('opts in install', opts);
     getInstallationPath(function(err, installationPath) {
         console.log('uinstallation', installationPath);
         console.log('opts', opts);
@@ -220,8 +221,10 @@ let actions = {
 };
 
 let argv = process.argv;
+console.log('argv', argv);
 if (argv && argv.length > 2) {
     let cmd = process.argv[2];
+    console.log('cmd', cmd);
     if (!actions[cmd]) {
         console.log("Invalid command to go-npm. `install` and `uninstall` are the only supported commands");
         process.exit(1);
@@ -229,9 +232,11 @@ if (argv && argv.length > 2) {
 
     actions[cmd](function(err) {
         if (err) {
+            console.log('argv if err', err);
             console.error(err);
             process.exit(1);
         } else {
+            console.log('argv else');
             process.exit(0);
         }
     });
