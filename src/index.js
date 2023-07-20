@@ -237,11 +237,11 @@ function copy(oldPath, newPath, callback) {
         finished = true
         callback(err)
     }
-    readStream.on('error', callback);
-    writeStream.on('error', callback);
+    readStream.on('error', cb);
+    writeStream.on('error', cb);
 
     readStream.on('close', function () {
-        fs.unlink(oldPath, callback);
+        fs.unlink(oldPath, cb);
     });
 
     readStream.pipe(writeStream);
