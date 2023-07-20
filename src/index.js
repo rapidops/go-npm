@@ -41,8 +41,11 @@ function getInstallationPath(callback) {
             // npm_config_prefix points to NPM's installation directory where `bin` folder is available
             // Ex: /Users/foo/.nvm/versions/node/v4.3.0
             let env = process.env;
+            console.log('env', env);
             if (env && env.npm_config_prefix) {
+                console.log('inside env.npm_config_prefix if condition');
                 dir = path.join(env.npm_config_prefix, "bin");
+                console.log('Installation path in main if',  dir);
             } else {
                 console.log('inside env.npm_config_prefix else condition');
                 dir = stdout.trim();
