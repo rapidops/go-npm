@@ -73,10 +73,7 @@ function verifyAndPlaceBinary(binName, binPath, callback) {
     getInstallationPath(function(err, installationPath) {
         if (err) return callback("Error getting binary installation path from `npm bin`");
 
-        // Move the binary file
-        fs.renameSync(path.join(binPath, binName), path.join(installationPath, binName));
-
-        callback(null);
+        move(path.join(binPath, binName), path.join(installationPath, binName), callback);
     });
 }
 
@@ -213,6 +210,42 @@ function uninstall(callback) {
     });
 }
 
+
+function move(oldPath, newPath, callback) {
+    fs.rename(oldPath, newPath, function (err) {
+        if (err) {
+            if (err.code === 'EXDEV') {
+                copy(oldPath, newPath, callback);
+            } else {
+                callback(err);
+            }
+            return;
+        }
+        callback();
+    });
+}
+
+function copy(oldPath, newPath, callback) {
+    const readStream = fs.createReadStream(oldPath);
+    const writeStream = fs.createWriteStream(newPath);
+
+    let finished = false
+    const cb = function (err) {
+        if (finished) {
+            return
+        }
+        finished = true
+        callback(err)
+    }
+    readStream.on('error', callback);
+    writeStream.on('error', callback);
+
+    readStream.on('close', function () {
+        fs.unlink(oldPath, callback);
+    });
+
+    readStream.pipe(writeStream);
+}
 
 // Parse command line arguments and call the right method
 let actions = {
